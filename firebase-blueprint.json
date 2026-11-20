@@ -1,0 +1,326 @@
+{
+  "entities": {
+    "AdminRecord": {
+      "title": "AdminRecord",
+      "description": "Authorized super administrator record keyed by Firebase Auth UID.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "email": { "type": "string", "format": "email", "maxLength": 200 },
+        "grantedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "grantedAt"]
+    },
+    "UserPrivateProfile": {
+      "title": "UserPrivateProfile",
+      "description": "Private student or partner profile containing PII, isolated under users/{userId}/private/info.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "displayName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "email": { "type": "string", "format": "email", "maxLength": 200 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "hostelOrPg": { "type": "string", "maxLength": 120 },
+        "roomNumber": { "type": "string", "maxLength": 60 },
+        "landmark": { "type": "string", "maxLength": 140 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "displayName", "updatedAt"]
+    },
+    "PlatformConfig": {
+      "title": "PlatformConfig",
+      "description": "Administrator-configured pilot settings, service fee, WhatsApp fallback, and unit-economics planning assumptions.",
+      "type": "object",
+      "properties": {
+        "deliveryFee": { "type": "number" },
+        "pilotFeeDisclaimer": { "type": "string", "minLength": 5, "maxLength": 300 },
+        "fallbackWhatsappNumber": { "type": "string", "maxLength": 20 },
+        "enableCod": { "type": "boolean" },
+        "enableUpi": { "type": "boolean" },
+        "pilotRegionName": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "pilotBannerText": { "type": "string", "maxLength": 220 },
+        "variableCostPerTxn": { "type": "number" },
+        "monthlyFixedCost": { "type": "number" },
+        "baseMonthlyCustomers": { "type": "number" },
+        "basePurchasesPerCustomer": { "type": "number" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "deliveryFee",
+        "pilotFeeDisclaimer",
+        "fallbackWhatsappNumber",
+        "enableCod",
+        "enableUpi",
+        "pilotRegionName",
+        "updatedAt"
+      ]
+    },
+    "ServiceArea": {
+      "title": "ServiceArea",
+      "description": "Approved hyperlocal delivery cluster in DGU Campus / Selaqui, Dehradun.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "clusterType": { "type": "string", "enum": ["hostel", "pg", "campus"] },
+        "locality": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "city": { "type": "string", "minLength": 2, "maxLength": 80 },
+        "isActive": { "type": "boolean" },
+        "deliveryEstimateNote": { "type": "string", "maxLength": 160 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "clusterType", "locality", "city", "isActive", "updatedAt"]
+    },
+    "Store": {
+      "title": "Store",
+      "description": "Participating local retailer store in the Selaqui / DGU pilot cluster.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "ownerName": { "type": "string", "minLength": 2, "maxLength": 100 },
+        "ownerUid": { "type": "string", "maxLength": 128 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "whatsappNumber": { "type": "string", "maxLength": 20 },
+        "address": { "type": "string", "minLength": 3, "maxLength": 240 },
+        "serviceAreaIds": { "type": "array" },
+        "category": { "type": "string", "minLength": 2, "maxLength": 60 },
+        "operatingHours": { "type": "string", "minLength": 2, "maxLength": 80 },
+        "status": { "type": "string", "enum": ["pending", "active", "suspended"] },
+        "deliveryNote": { "type": "string", "maxLength": 200 },
+        "supportsCod": { "type": "boolean" },
+        "supportsUpi": { "type": "boolean" },
+        "verifiedUpiId": { "type": "string", "maxLength": 100 },
+        "isPharmacyLicensed": { "type": "boolean" },
+        "isDemo": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "name",
+        "ownerName",
+        "ownerUid",
+        "phone",
+        "whatsappNumber",
+        "address",
+        "serviceAreaIds",
+        "category",
+        "operatingHours",
+        "status",
+        "supportsCod",
+        "supportsUpi",
+        "isPharmacyLicensed",
+        "isDemo",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Catalog essential listed by a participating local retailer.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeName": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "retailerUid": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "category": {
+          "type": "string",
+          "enum": ["Groceries", "Snacks", "Beverages", "Stationery", "Personal Care", "Other Essentials", "Medicines"]
+        },
+        "description": { "type": "string", "minLength": 2, "maxLength": 400 },
+        "imageUrl": { "type": "string", "maxLength": 400 },
+        "price": { "type": "number" },
+        "unitLabel": { "type": "string", "minLength": 1, "maxLength": 40 },
+        "isAvailable": { "type": "boolean" },
+        "isDemo": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "storeId",
+        "storeName",
+        "retailerUid",
+        "name",
+        "category",
+        "description",
+        "imageUrl",
+        "price",
+        "unitLabel",
+        "isAvailable",
+        "isDemo",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Bundle": {
+      "title": "Bundle",
+      "description": "Curated student-friendly bundle composed strictly of configured retailer products.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Hostel Essentials",
+            "Study Essentials",
+            "Late-Night Snacks",
+            "Personal Care",
+            "Monthly Essentials"
+          ]
+        },
+        "description": { "type": "string", "minLength": 5, "maxLength": 360 },
+        "storeId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeName": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "imageUrl": { "type": "string", "maxLength": 400 },
+        "items": { "type": "array" },
+        "originalTotal": { "type": "number" },
+        "promotionalPrice": { "type": "number" },
+        "hasPromotionalPrice": { "type": "boolean" },
+        "isActive": { "type": "boolean" },
+        "isDemo": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "name",
+        "category",
+        "description",
+        "storeId",
+        "storeName",
+        "imageUrl",
+        "items",
+        "originalTotal",
+        "promotionalPrice",
+        "hasPromotionalPrice",
+        "isActive",
+        "isDemo",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Student order request submitted for WhatsApp-based retailer confirmation and fulfilment.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "orderRef": { "type": "string", "minLength": 4, "maxLength": 40 },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerName": { "type": "string", "minLength": 2, "maxLength": 100 },
+        "customerMobile": { "type": "string", "minLength": 8, "maxLength": 20 },
+        "hostelOrPg": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "roomDetails": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "landmark": { "type": "string", "maxLength": 140 },
+        "deliveryInstructions": { "type": "string", "maxLength": 240 },
+        "storeId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "storeName": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "retailerUid": { "type": "string", "maxLength": 128 },
+        "items": { "type": "array" },
+        "productSubtotal": { "type": "number" },
+        "deliveryFee": { "type": "number" },
+        "orderTotal": { "type": "number" },
+        "paymentMethod": { "type": "string", "enum": ["COD", "UPI"] },
+        "paymentStatus": { "type": "string", "enum": ["Unverified", "Manually Verified", "Not Applicable"] },
+        "orderStatus": {
+          "type": "string",
+          "enum": [
+            "Draft",
+            "Pending Retailer Confirmation",
+            "Accepted",
+            "Rejected",
+            "Confirmed",
+            "Out for Delivery",
+            "Completed",
+            "Cancelled"
+          ]
+        },
+        "whatsappMessage": { "type": "string", "minLength": 10, "maxLength": 3000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "id",
+        "orderRef",
+        "customerId",
+        "customerName",
+        "customerMobile",
+        "hostelOrPg",
+        "roomDetails",
+        "storeId",
+        "storeName",
+        "retailerUid",
+        "items",
+        "productSubtotal",
+        "deliveryFee",
+        "orderTotal",
+        "paymentMethod",
+        "paymentStatus",
+        "orderStatus",
+        "whatsappMessage",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Feedback": {
+      "title": "Feedback",
+      "description": "Pilot customer survey and order feedback for validating willingness to pay and repeat purchase assumptions.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerName": { "type": "string", "minLength": 2, "maxLength": 100 },
+        "hostelOrPg": { "type": "string", "minLength": 2, "maxLength": 120 },
+        "orderRef": { "type": "string", "maxLength": 40 },
+        "willingToPay20": { "type": "string", "enum": ["yes", "maybe", "no"] },
+        "rating": { "type": "number" },
+        "comment": { "type": "string", "minLength": 3, "maxLength": 600 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "customerId", "customerName", "hostelOrPg", "willingToPay20", "rating", "comment", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/admins/{adminId}": {
+      "schema": { "$ref": "#/entities/AdminRecord" },
+      "description": "Super administrator lookup documents keyed by UID."
+    },
+    "/users/{userId}/private/{docId}": {
+      "schema": { "$ref": "#/entities/UserPrivateProfile" },
+      "description": "Private student and partner profile documents containing PII."
+    },
+    "/platformConfig/{configId}": {
+      "schema": { "$ref": "#/entities/PlatformConfig" },
+      "description": "Global CampusCart pilot configuration and financial planning assumptions."
+    },
+    "/serviceAreas/{areaId}": {
+      "schema": { "$ref": "#/entities/ServiceArea" },
+      "description": "Approved DGU Campus and Selaqui hostel/PG delivery zones."
+    },
+    "/stores/{storeId}": {
+      "schema": { "$ref": "#/entities/Store" },
+      "description": "Local retailer stores onboarded by administrator."
+    },
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Products associated with participating local stores."
+    },
+    "/bundles/{bundleId}": {
+      "schema": { "$ref": "#/entities/Bundle" },
+      "description": "Student-friendly product bundles configured by administrator."
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Customer order requests awaiting WhatsApp retailer confirmation and manual fulfilment."
+    },
+    "/feedback/{feedbackId}": {
+      "schema": { "$ref": "#/entities/Feedback" },
+      "description": "Student pilot feedback and willingness-to-pay responses."
+    }
+  }
+}

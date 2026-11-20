@@ -1,0 +1,8 @@
+{
+  "name": "CampusCart",
+  "description": "Student-focused hyperlocal quick-commerce MVP connecting DGU Campus and Selaqui hostel and PG residents with nearby local retailers via WhatsApp-based ordering.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
